@@ -7,12 +7,11 @@
 package main
 
 import (
-  "bufio"
-  "go/token"
-  "io"
-	"unicode"
-
-	"github.com/cznic/golex/lex"
+    "bufio"
+    "go/token"
+    "io"
+    "unicode"
+    "github.com/cznic/golex/lex"
 )
 
 // Allocate Character classes anywhere in [0x80, 0xFF].

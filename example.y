@@ -4,7 +4,6 @@ package main
 import (
   "bytes"
   "fmt"
-  "os"
   "io"
 )
 
@@ -75,10 +74,3 @@ func A() {  // Just an example
 }
 
 `
-
-func main() {
-  yyDebug        = 1
-  yyErrorVerbose = true
-  l := newLexer(bytes.NewBufferString(src), os.Stdout, "file.name")
-  yyParse(l)
-}

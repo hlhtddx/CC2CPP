@@ -1,8 +1,36 @@
 %{
 package main
+
+import (
+  "bytes"
+  "fmt"
+  "io"
+)
+
+type node struct {
+  name string
+  children []node
+}
+
+func (n node) String() string {
+  buf := new(bytes.Buffer)
+  n.print(buf, " ")
+  return buf.String()
+}
+
+func (n node) print(out io.Writer, indent string) {
+  fmt.Fprintf(out, "\n%v%v", indent, n.name)
+  for _, nn := range n.children { nn.print(out, indent + "  ") }
+}
+
+func Node(name string) node { return node{name: name} }
+func (n node) append(nn...node) node { n.children = append(n.children, nn...); return n }
+
 %}
 
-%union {
+%union{
+    node node
+    token string
 }
 
 /* This group is used by the C/C++ language parser */
@@ -33,21 +61,25 @@ package main
 %token TYPEDEFname
 
 /* Multi-Character operators */
-%token  ARROW            /*    ->                              */
-%token  ICR DECR         /*    ++      --                      */
-%token  LS RS            /*    <<      >>                      */
-%token  LE GE EQ NE      /*    <=      >=      ==      !=      */
-%token  ANDAND OROR      /*    &&      ||                      */
-%token  ELLIPSIS         /*    ...                             */
+%token ARROW            /*    ->                              */
+%token ICR DECR         /*    ++      --                      */
+%token LS RS            /*    <<      >>                      */
+%token LE GE EQ NE      /*    <=      >=      ==      !=      */
+%token ANDAND OROR      /*    &&      ||                      */
+%token ELLIPSIS         /*    ...                             */
                  /* Following are used in C++, not ANSI C        */
-%token  CLCL             /*    ::                              */
-%token  DOTstar ARROWstar/*    .*       ->*                    */
+%token CLCL             /*    ::                              */
+%token DOTstar ARROWstar/*    .*       ->*                    */
 
 /* modifying assignment operators */
 %token MULTassign  DIVassign    MODassign   /*   *=      /=      %=      */
 %token PLUSassign  MINUSassign              /*   +=      -=              */
 %token LSassign    RSassign                 /*   <<=     >>=             */
 %token ANDassign   ERassign     ORassign    /*   &=      ^=      |=      */
+
+%token NEWLINE DEFINE DEFINED OPDEFINED OPDEFINED ELIF ENDIF
+%token ERROR IFDEF INCLUDE LINE PRAGMA UNDEF IFNDEF
+%token POUNDPOUND
 
 /*************************************************************************/
 
@@ -2051,3 +2083,11 @@ global_opt_scope_opt_typedefname:
         ;
 
 %%
+
+const src = `
+
+func A() {  // Just an example
+  a = Привет(42, pi()) / 2
+}
+
+`
