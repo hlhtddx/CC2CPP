@@ -20,6 +20,10 @@ type lexer struct {
 	*lex.Lexer
 }
 
+func (l *lexer) Error(s string) {
+	println(s)
+}
+
 func rune2Class(r rune) int {
 	if r >= 0 && r < 0x80 { // Keep ASCII as it is.
 		return int(r)
@@ -80,7 +84,7 @@ horizontal_white [ ]|{h_tab}
 
 {horizontal_white}+
 ({v_tab}|{c_return}|{form_feed})+
-({horizontal_white}|{v_tab}|{c_return}|{form_feed})*"\n"
+({horizontal_white}|{v_tab}|{c_return}|{form_feed})*\n
 
 auto                return AUTO
 break               return BREAK
@@ -203,7 +207,8 @@ virtual             return VIRTUAL
 "|="                return ORassign
 "..."               return ELLIPSIS
 
-"/\*(.|\n)*?\*/"    {}
+\/\/.*\n
+\/\*(.|\n)*\*\/
 
 %%
 	if c, ok := l.Abort(); ok { return int(c) }

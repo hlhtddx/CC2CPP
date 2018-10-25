@@ -8,8 +8,16 @@ import (
 	"os"
 )
 
+const src = `
+
+void A() {  // Just an example
+  a = help_me(42, pi()) / 2;
+}
+
+`
+
 func main() {
-	yyDebug = 1
+	yyDebug = 10
 	yyErrorVerbose = true
 	l := newLexer(bytes.NewBufferString(src), os.Stdout, "file.name")
 	yyParse(l)

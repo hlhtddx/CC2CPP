@@ -2084,10 +2084,4 @@ global_opt_scope_opt_typedefname:
 
 %%
 
-const src = `
 
-func A() {  // Just an example
-  a = Привет(42, pi()) / 2
-}
-
-`

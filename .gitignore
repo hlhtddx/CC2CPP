@@ -1,0 +1,6 @@
+CC2CPP
+go.*
+parser.go
+scanner.go
+*.output
+.idea
