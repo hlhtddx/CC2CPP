@@ -80,7 +80,7 @@ c_return [\015]
 horizontal_white [ ]|{h_tab}
 
 %%
-
+    c = l.Rule0()
 
 {horizontal_white}+
 ({v_tab}|{c_return}|{form_feed})+
